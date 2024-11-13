@@ -8,83 +8,74 @@ Computer with Vivado or any Verilog simulation software. Verilog HDL compiler.
 
 # Verilog code for 4-bit Ripple carry adder
 
-module ripple_carry_adder_4bit (
-input [3:0] A,      // 4-bit input A
-input [3:0] B,      // 4-bit input B
-input Cin,          // Carry input
-output [3:0] Sum,   // 4-bit Sum output
-output Cout         // Carry output
+module ripple_adders (
+    input [3:0] A, 
+    input [3:0] B, 
+    input Cin, 
+    output [3:0] Sum, 
+    output Cout
 );
 
-reg [3:0] sum_temp;
-reg cout_temp;
+    reg [3:0] sum_temp;
+    reg cout_temp;
+    reg cout_final;
 
-// Task for Full Adder
-task full_adder;
-    input a, b, cin;
-    output sum, cout;
+    task full_adder;
+        input a, b, cin;
+        output sum, cout;
     begin
         sum = a ^ b ^ cin;
         cout = (a & b) | (b & cin) | (cin & a);
     end
-endtask
+    endtask
 
-// Ripple carry logic using task
-always @(*) begin
-    full_adder(A[0], B[0], Cin, sum_temp[0], cout_temp);
-    full_adder(A[1], B[1], cout_temp, sum_temp[1], cout_temp);
-    full_adder(A[2], B[2], cout_temp, sum_temp[2], cout_temp);
-    full_adder(A[3], B[3], cout_temp, sum_temp[3], Cout);
-end
+    always @(*) begin
+        full_adder(A[0], B[0], Cin, sum_temp[0], cout_temp);
+        full_adder(A[1], B[1], cout_temp, sum_temp[1], cout_temp);
+        full_adder(A[2], B[2], cout_temp, sum_temp[2], cout_temp);
+        full_adder(A[3], B[3], cout_temp, sum_temp[3], cout_final);
+    end
 
-assign Sum = sum_temp;
+    assign Sum = sum_temp;
+    assign Cout = cout_final;
 
 endmodule
 
 # Testbench code for 4-bit Ripple carry adder
-module ripple_carry_adder_4bit_tb;
+module ripple_adder_tb;
 
-reg [3:0] A, B;
-reg Cin;
-wire [3:0] Sum;
-wire Cout;
+    reg [3:0] A, B;
+    reg Cin;
+    wire [3:0] Sum;
+    wire Cout;
 
-// Instantiate the ripple carry adder
-ripple_carry_adder_4bit uut (
-    .A(A),
-    .B(B),
-    .Cin(Cin),
-    .Sum(Sum),
-    .Cout(Cout)
-);
+    // Instantiate the ripple carry adder
+    ripple_adders uut (
+        .A(A),
+        .B(B),
+        .Cin(Cin),
+        .Sum(Sum),
+        .Cout(Cout)
+    );
 
-initial begin
-    // Test cases
-    A = 4'b0001; B = 4'b0010; Cin = 0;
-    #10;
-    
-    A = 4'b0110; B = 4'b0101; Cin = 0;
-    #10;
-    
-    A = 4'b1111; B = 4'b0001; Cin = 0;
-    #10;
-    
-    A = 4'b1010; B = 4'b1101; Cin = 1;
-    #10;
-    
-    A = 4'b1111; B = 4'b1111; Cin = 1;
-    #10;
+    initial begin
+        // Test cases
+        A = 4'b0001; B = 4'b0010; Cin = 0; #10;
+        A = 4'b0110; B = 4'b0101; Cin = 0; #10;
+        A = 4'b1111; B = 4'b0001; Cin = 0; #10;
+        A = 4'b1010; B = 4'b1101; Cin = 1; #10;
+        A = 4'b1111; B = 4'b1111; Cin = 1; #10;
+        $stop;
+    end
 
-    $stop;
-end
-
-initial begin
-    $monitor("Time = %0t | A = %b | B = %b | Cin = %b | Sum = %b | Cout = %b", $time, A, B, Cin, Sum, Cout);
-end
-
-endmodule
+    initial begin
+        $monitor("Time = %0t | A = %b | B = %b | Cin = %b | Sum = %b | Cout = %b",
+                 $time, A, B, Cin, Sum, Cout);
+    end
 
 # OUTPUT
+![Screenshot (38)](https://github.com/user-attachments/assets/2f922b86-56a7-4581-a399-0502974fd477)
+
 
 # Verilog code for 4-bit Ripple counter
 module ripple_counter_4bit (
@@ -147,6 +138,7 @@ end
 endmodule
 
 # OUTPUT
+![Screenshot (39)](https://github.com/user-attachments/assets/6efadb71-92bc-44d7-b99a-1e61ed494c36)
 
 
 # CONCLUSION
