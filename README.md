@@ -1,4 +1,4 @@
-# 4-bit-Ripple-Carry-Adder-using-Task-and-4-bit-Ripple-Counter-using-Function-with-Testbench
+# Exp No:7 4 bit Ripple Carry Adder using Task and 4 bit Ripple Counter using Function with Testbench
 
 ## Aim:
 To design and simulate a 4-bit Ripple Carry Adder using Verilog HDL with a task to implement the full adder functionality and verify its output using a testbench. To design and simulate a 4-bit Ripple Counter using Verilog HDL with a function to calculate the next state and verify its functionality using a testbench.
@@ -73,7 +73,7 @@ module ripple_adder_tb;
                  $time, A, B, Cin, Sum, Cout);
     end
 
-## OUTPUT
+## Output
 ![Screenshot (38)](https://github.com/user-attachments/assets/2f922b86-56a7-4581-a399-0502974fd477)
 
 
@@ -137,9 +137,9 @@ end
 
 endmodule
 
-## OUTPUT
+## Output
 ![Screenshot (39)](https://github.com/user-attachments/assets/6efadb71-92bc-44d7-b99a-1e61ed494c36)
 
 
-## CONCLUSION
+## Conclusion
 The 4-bit Ripple Carry Adder was successfully designed and implemented using Verilog HDL with the help of a task for the full adder logic. The testbench verified that the ripple carry adder correctly computes the 4-bit sum and carry-out for various input combinations. The simulation results matched the expected outputs. The 4-bit Ripple Counter was successfully designed and implemented using Verilog HDL. A function was used to calculate the next state of the counter.
